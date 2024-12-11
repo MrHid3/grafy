@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 #include <set>
 #include <utility>
 #include <vector>
@@ -6,7 +7,18 @@
 using namespace std;
 
 class ListGraph {
-    set<int> graph;
+public:
+    map<int, vector<int>> graph;
+    ListGraph() {
+        this->graph = map<int, vector<int>>();
+    }
+    ListGraph(map<int, vector<int>> graph) {
+        this->graph = graph;
+    }
+    void print(){
+        for(int, vector<int> : this->graph){
+
+    }
 };
 
 class MatrixGraph {
