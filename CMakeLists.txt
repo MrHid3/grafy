@@ -3,4 +3,6 @@ project(grafy)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(grafy main.cpp)
+add_executable(grafy main.cpp
+        ListGraph.h
+        MatrixGraph.h)
