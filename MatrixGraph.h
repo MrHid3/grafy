@@ -2,6 +2,7 @@
 #define MATRIXGRAPH_H
 #pragma once
 #include "ListGraph.h"
+#include <fstream>
 
 class MatrixGraph {
 public:
@@ -11,6 +12,40 @@ public:
 	}
 	MatrixGraph(std::vector<std::vector<int>> matrix) {
 		this->graph = std::move(matrix);
+	}
+	MatrixGraph(std::string directory){
+		std::ifstream f(directory);
+		if (!f.is_open()) {
+			this->graph = {};
+			return;
+		}
+		std::vector<std::string> text;
+		std::string line;
+		while (std::getline(f, line)){
+			text.push_back(line);
+		}
+		if (text.size() == 0){
+			this->graph = {};
+			return;
+		}
+		int length = text[0].size();
+		for (int i = 0; i < text.size(); i++){
+			if (text[i].size() != length){
+				this->graph = {};
+				return;
+			}
+			this->graph.push_back({});
+			std::string current = "";
+			for (int j = 0; j < text[i].size(); j++){
+				if (text[i][j] == ' '){
+					this->graph[i].push_back(stoi(current));
+					current = "";
+				}else{
+					current += text[i][j];
+				}
+			}
+			this->graph[i].push_back(stoi(current));
+		}
 	}
 	MatrixGraph(ListGraph graph);
 	void print() {

@@ -47,19 +47,29 @@ ListGraph::ListGraph(MatrixGraph matrix){
 
 
 int main() {
-    MatrixGraph eskib;
-    eskib = MatrixGraph({{0, 1, 1, 0, 0}, {1, 0, 1, 0, 0}, {1, 1, 0, 1, 0}, {0, 0, 1, 0, 0}, {0, 0, 0, 0, 0}});
-    eskib.print();
-    map<int, vector<int>> graph;
-    graph[0] = {1, 2};
-    graph[1] = {0, 2};
-    graph[2] = {0, 1, 3};
-    graph[3] = {2};
-    ListGraph eskib2 = ListGraph(graph);
-    eskib2.print();
-    ListGraph eskib3 = ListGraph(eskib);
-    eskib3.print();
-    MatrixGraph eskib4 = MatrixGraph(eskib3);
-    eskib4.print();
+    //matrix z argumentu
+    MatrixGraph matrix1;
+    matrix1 = MatrixGraph({{0, 1, 1, 0, 0}, {1, 0, 1, 0, 0}, {1, 1, 0, 1, 0}, {0, 0, 1, 0, 0}, {0, 0, 0, 0, 0}});
+    matrix1.print();
+    //lista z argumentu, nie jestem pewien jak zrobić mapę onelinerem
+    map<int, vector<int>> graph1;
+    graph1[0] = {1, 2};
+    graph1[1] = {0, 2};
+    graph1[2] = {0, 1, 3};
+    graph1[3] = {2};
+    ListGraph graph2 = ListGraph(graph1);
+    graph2.print();
+    //matrix z listy
+    MatrixGraph matrix3 = MatrixGraph(graph2);
+    matrix3.print();
+    //vice versa
+    ListGraph graph3 = ListGraph(matrix3);
+    graph3.print();
+    //lista z pliku
+    ListGraph graph4 = ListGraph("../listgraph.txt");
+    graph4.print();
+    //matrix z pliku
+    MatrixGraph matrix4 = ListGraph("../listgraph.txt");
+    matrix4.print();
     return 0;
 }
