@@ -16,6 +16,23 @@ public:
 		right = nullptr;
 		left = nullptr;
 	}
+	bool insert(int data){
+		if (this->data == data){
+			return 0;
+		}else if (this->data > data){
+			if (this->right == nullptr){
+				this->right = new Node(data);
+			}else{
+				this->right->insert(data);
+			}
+		}else{
+			if (this->left == nullptr){
+				this->left = new Node(data);
+			}else{
+				this->left->insert(data);
+			}
+		}
+	}
 };
 
 #endif //NODE_H

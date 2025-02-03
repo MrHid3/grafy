@@ -14,8 +14,8 @@ public:
 	BinaryTree(Node node){
 		root = node;
 	}
-	bool insert(int data, Node node = root){
-		if (node.data == data){}
+	bool insert(int data){
+		return this->root.insert(data);
 	}
 };
 
