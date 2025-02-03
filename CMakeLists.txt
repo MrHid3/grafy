@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(grafy main.cpp
         ListGraph.h
-        MatrixGraph.h)
+        MatrixGraph.h
+        BinaryTree.h
+        Node.h)

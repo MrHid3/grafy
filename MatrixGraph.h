@@ -10,10 +10,10 @@ public:
 	MatrixGraph() {
 		this->graph = {};
 	}
-	MatrixGraph(std::vector<std::vector<int>> matrix) {
+	explicit MatrixGraph(std::vector<std::vector<int>> matrix) {
 		this->graph = std::move(matrix);
 	}
-	MatrixGraph(std::string directory){
+	explicit MatrixGraph(const std::string& directory){
 		std::ifstream f(directory);
 		if (!f.is_open()) {
 			this->graph = {};
@@ -47,7 +47,7 @@ public:
 			this->graph[i].push_back(stoi(current));
 		}
 	}
-	MatrixGraph(ListGraph graph);
+	explicit MatrixGraph(ListGraph graph);
 	void print() {
 		std::cout << "  ";
 		for (int i = 0; i < graph.size(); i++)

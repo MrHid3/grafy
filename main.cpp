@@ -5,6 +5,7 @@
 #include <vector>
 #include "ListGraph.h"
 #include "MatrixGraph.h"
+#include "BinaryTree.h"
 #pragma once
 using namespace std;
 

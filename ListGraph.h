@@ -11,10 +11,10 @@ public:
 	ListGraph() {
 		this->graph = std::map<int, std::vector<int>>();
 	}
-	ListGraph(std::map<int, std::vector<int>> graph) {
+	explicit ListGraph(std::map<int, std::vector<int>> graph) {
 		this->graph = std::move(graph);
 	}
-	ListGraph(std::string directory){
+	explicit ListGraph(const std::string& directory){
 		std::ifstream f(directory);
 		if (!f.is_open()) {
 			this->graph = std::map<int, std::vector<int>>();
