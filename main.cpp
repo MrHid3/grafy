@@ -48,29 +48,32 @@ ListGraph::ListGraph(MatrixGraph matrix){
 
 
 int main() {
-    //matrix z argumentu
-    MatrixGraph matrix1;
-    matrix1 = MatrixGraph({{0, 1, 1, 0, 0}, {1, 0, 1, 0, 0}, {1, 1, 0, 1, 0}, {0, 0, 1, 0, 0}, {0, 0, 0, 0, 0}});
-    matrix1.print();
-    //lista z argumentu, nie jestem pewien jak zrobić mapę onelinerem
-    map<int, vector<int>> graph1;
-    graph1[0] = {1, 2};
-    graph1[1] = {0, 2};
-    graph1[2] = {0, 1, 3};
-    graph1[3] = {2};
-    ListGraph graph2 = ListGraph(graph1);
-    graph2.print();
-    //matrix z listy
-    MatrixGraph matrix3 = MatrixGraph(graph2);
-    matrix3.print();
-    //vice versa
-    ListGraph graph3 = ListGraph(matrix3);
-    graph3.print();
-    //lista z pliku
-    ListGraph graph4 = ListGraph("../listgraph.txt");
-    graph4.print();
-    //matrix z pliku
-    MatrixGraph matrix4 = ListGraph("../listgraph.txt");
-    matrix4.print();
+    // //matrix z argumentu
+    // MatrixGraph matrix1;
+    // matrix1 = MatrixGraph({{0, 1, 1, 0, 0}, {1, 0, 1, 0, 0}, {1, 1, 0, 1, 0}, {0, 0, 1, 0, 0}, {0, 0, 0, 0, 0}});
+    // matrix1.print();
+    // //lista z argumentu, nie jestem pewien jak zrobić mapę onelinerem
+    // map<int, vector<int>> graph1;
+    // graph1[0] = {1, 2};
+    // graph1[1] = {0, 2};
+    // graph1[2] = {0, 1, 3};
+    // graph1[3] = {2};
+    // ListGraph graph2 = ListGraph(graph1);
+    // graph2.print();
+    // //matrix z listy
+    // MatrixGraph matrix3 = MatrixGraph(graph2);
+    // matrix3.print();
+    // //vice versa
+    // ListGraph graph3 = ListGraph(matrix3);
+    // graph3.print();
+    // //lista z pliku
+    // ListGraph graph4 = ListGraph("../listgraph.txt");
+    // graph4.print();
+    // //matrix z pliku
+    // MatrixGraph matrix4 = ListGraph("../listgraph.txt");
+    // matrix4.print();
+    vector<int> source = {6, 12, 1, 67, 134 ,45, 13};
+    BinaryTree bt = BinaryTree(source);
+    bt.print();
     return 0;
 }
