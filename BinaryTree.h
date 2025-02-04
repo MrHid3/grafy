@@ -14,8 +14,21 @@ public:
 	BinaryTree(Node node){
 		root = node;
 	}
+	BinaryTree(std::vector<int> data) {
+		if (data.size() > 0) {
+			this->root = Node(data[0]);
+			for (int i = 1; i < data.size(); i++) {
+				this->insert(data[i]);
+			}
+		} else {
+			this->root = Node();
+		}
+	}
 	bool insert(int data){
 		return this->root.insert(data);
+	}
+	void print() {
+		this->root.print();
 	}
 };
 
