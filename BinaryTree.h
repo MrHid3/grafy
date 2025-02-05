@@ -27,8 +27,69 @@ public:
 	bool insert(int data){
 		return this->root.insert(data);
 	}
-	void print() {
-		this->root.print();
+	int leftmost() {
+		Node curr = root;
+		while(curr.left != nullptr) {
+			curr = *curr.left;
+		}
+		return curr.data;
+	}
+	int rightmost() {
+		Node curr = root;
+		while(curr.right != nullptr) {
+			curr = *curr.right;
+		}
+		return curr.data;
+	}
+	bool find(int data) {
+		Node curr = root;
+		while(true) {
+			if(curr.data == data) {
+				return 1;
+			}
+			if(curr.data < data) {
+				if(curr.right != nullptr) {
+					curr = *curr.right;
+				}else return 0;
+			}
+			if (curr.data > data) {
+				if(curr.left != nullptr) {
+					curr = *curr.left;
+				}else return 0;
+			}
+		};
+	}
+	std::vector<int> inorder() {
+		return root.inorder();
+	}
+	std::vector<int> preorder() {
+		return root.preorder();
+	}
+	std::vector<int> postorder() {
+		return root.postorder();
+	}
+	std::vector<int> inorderIterative() {
+		std::vector<int> result;
+		Node curr = this->leftmost();
+		while(true) {
+			bool isThere = false;
+			for(int i = 0; i < result.size(); i++) {
+				if(curr.left->data == result[i]) {
+					isThere = true;
+					break;
+				}
+			}
+
+			for(int i = 0; i < result.size(); i++) {
+				if(curr.data == result[i]) {
+					isThere = true;
+					break;
+				}
+			}
+			if(!isThere) {
+				result.push_back(curr.data);
+			}
+		}
 	}
 };
 

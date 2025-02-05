@@ -3,6 +3,7 @@
 
 class Node{
 public:
+	Node* ancestor;
 	Node* right;
 	Node* left;
 	int data;
@@ -11,7 +12,7 @@ public:
 		left = nullptr;
 		data = 0;
 	}
-	explicit Node(int data){
+	Node(int data, Node* ancestor = nullptr){
 		this->data = data;
 		right = nullptr;
 		left = nullptr;
@@ -22,14 +23,14 @@ public:
 			return 0;
 		}else if (this->data > data){
 			if (this->right == nullptr){
-				this->right = new Node(data);
+				this->right = new Node(data, this);
 				return 1;
 			}else{
 				return this->right->insert(data);
 			}
 		}else{
 			if (this->left == nullptr){
-				this->left = new Node(data);
+				this->left = new Node(data, this);
 				return 1;
 			}else{
 				return this->left->insert(data);
@@ -70,17 +71,51 @@ public:
 		}
 	};
 
-	void print() {
+	Node *succesor() {
+		if(this->right != nullptr) {
+			return this->right;
+		}
+		Node *curr = this;
+		while(curr->ancestor->left != curr) {
+			curr = curr->ancestor;
+		}
+		return curr->ancestor;
+	}
 
-		if (this->left != nullptr) {
-			// std:: cout << "lewo: ";
-			this->left->print();
+	std::vector<int> preorder() {
+		std::vector<int> result;
+		result.push_back(this->data);
+		if(this->left != nullptr) {
+			result.insert(result.end, this->left->preorder().begin(), this->left->preorder().end());
 		}
-		if (this->right != nullptr) {
-			// std:: cout << "prawo: ";
-			this->right->print();
+		if(this->right != nullptr) {
+			result.insert(result.end, this->right->preorder().begin(), this->right->preorder().end());
 		}
-		std::cout << this-> data << "\n";
+		return result;
+	}
+
+	std::vector<int> inorder() {
+		std::vector<int> result;
+		if(this->left != nullptr) {
+			result.insert(result.end, this->left->preorder().begin(), this->left->preorder().end());
+		}
+		result.push_back(this->data);
+		if(this->right != nullptr) {
+			result.insert(result.end, this->right->preorder().begin(), this->right->preorder().end());
+		}
+		return result;
+	}
+
+	std::vector<int> postorder() {
+		std::vector<int> result;
+		if(this->left != nullptr) {
+			result.insert(result.end, this->left->preorder().begin(), this->left->preorder().end());
+		}
+		if(this->right != nullptr) {
+			result.insert(result.end, this->right->preorder().begin(), this->right->preorder().end());
+		}
+		result.push_back(this->data);
+		return result;
 	}
 };
 
