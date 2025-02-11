@@ -7,4 +7,4 @@ add_executable(grafy main.cpp
         ListGraph.h
         MatrixGraph.h
         BinaryTree.h
-        Node.h)
+)

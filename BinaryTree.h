@@ -1,48 +1,73 @@
 #ifndef BINARYTREE_H
 #define BINARYTREE_H
-#include "Node.h"
+#include <vector>
 
 class BinaryTree{
 public:
-	Node root;
+	BinaryTree* ancestor;
+	BinaryTree* right;
+	BinaryTree* left;
+	int data;
 	BinaryTree(){
-		root = Node();
+		right = nullptr;
+		left = nullptr;
+		data = 0;
+		ancestor = nullptr;
 	}
-	BinaryTree(int data){
-		root = Node(data);
+	BinaryTree(int data, BinaryTree *ancestor = nullptr){
+		this->data = data;
+		this->right = nullptr;
+		this->left = nullptr;
+		this->ancestor = ancestor;
 	}
-	BinaryTree(Node node){
-		root = node;
-	}
-	BinaryTree(std::vector<int> data) {
+	BinaryTree(std::vector<int>data, BinaryTree *ancestor = nullptr) {
+		this->right = nullptr;
+		this->left = nullptr;
+		this->ancestor = ancestor;
 		if (data.size() > 0) {
-			this->root = Node(data[0]);
-			for (int i = 1; i < data.size(); i++) {
+			this->data = data[0];
+			for (int i = 1; i < std::size(data); i++) {
 				this->insert(data[i]);
 			}
 		} else {
-			this->root = Node();
+			BinaryTree();
 		}
 	}
 	bool insert(int data){
-		return this->root.insert(data);
+		if (this->data == data){
+			return 0;
+		}else if (this->data > data){
+			if (this->right == nullptr){
+				this->right = new BinaryTree(data, this);
+				return 1;
+			}else{
+				return this->right->insert(data);
+			}
+		}else{
+			if (this->left == nullptr){
+				this->left = new BinaryTree(data, this);
+				return 1;
+			}else{
+				return this->left->insert(data);
+			}
+		}
 	}
-	int leftmost() {
-		Node curr = root;
+	BinaryTree leftmost() {
+		BinaryTree curr = *this;
 		while(curr.left != nullptr) {
 			curr = *curr.left;
 		}
-		return curr.data;
+		return curr;
 	}
 	int rightmost() {
-		Node curr = root;
+		BinaryTree curr = *this;
 		while(curr.right != nullptr) {
 			curr = *curr.right;
 		}
 		return curr.data;
 	}
 	bool find(int data) {
-		Node curr = root;
+		BinaryTree curr = *this;
 		while(true) {
 			if(curr.data == data) {
 				return 1;
@@ -59,18 +84,55 @@ public:
 			}
 		};
 	}
-	std::vector<int> inorder() {
-		return root.inorder();
+	BinaryTree *succesor() {
+		if(this->right != nullptr) {
+			return this->right;
+		}
+		BinaryTree *curr = this;
+		while(curr->ancestor->left != curr) {
+			curr = curr->ancestor;
+		}
+		return curr->ancestor;
 	}
-	std::vector<int> preorder() {
-		return root.preorder();
+	std::vector<int> inorder() {
+		std::vector<int> result;
+		if(this->left != nullptr) {
+			result.insert(result.end(), this->left->preorder().begin(), this->left->preorder().end());
+		}
+		result.push_back(this->data);
+		if(this->right != nullptr) {
+			result.insert(result.end(), this->right->preorder().begin(), this->right->preorder().end());
+		}
+		return result;
+	}
+	std::vector<int> & preorder(){
+		std::vector<int> result;
+		result.push_back(this->data);
+		;
+		if(this->left != nullptr) {
+			std::vector<int> left = this->left->preorder();
+			result.insert(result.end(), left.begin(), left.end());
+		}
+		if(this->right != nullptr) {
+			std::vector<int> right = this->right->preorder();
+			result.insert(result.end(), right.begin(), right.end());
+		}
+		return result;
 	}
 	std::vector<int> postorder() {
-		return root.postorder();
+		std::vector<int> result;
+		if(this->left != nullptr) {
+			result.insert(result.end(), this->left->preorder().begin(), this->left->preorder().end());
+		}
+		if(this->right != nullptr) {
+			result.insert(result.end(), this->right->preorder().begin(), this->right->preorder().end());
+		}
+		result.push_back(this->data);
+		return result;
 	}
 	std::vector<int> inorderIterative() {
 		std::vector<int> result;
-		Node curr = this->leftmost();
+		BinaryTree curr = this->leftmost();
 		while(true) {
 			bool isThere = false;
 			for(int i = 0; i < result.size(); i++) {
@@ -91,6 +153,38 @@ public:
 			}
 		}
 	}
+	bool destroy(int data){
+		if (this->data == data) {
+			if (this->right == nullptr && this->left == nullptr) {
+				delete this;
+				return 1;
+			} else if (this->right == nullptr){
+				this->data = this->left->data;
+				this->left = nullptr;
+				return 1;
+			} else if (this->left == nullptr) {
+				this->data = this->right->data;
+				this->right = nullptr;
+				return 1;
+			} else {
+				this->data = this->right->data;
+				this->right->destroy(this->right->data);
+				return 1;
+			}
+		} else if (this->data < data) {
+			if (this->right != nullptr) {
+				return this->right->destroy(data);
+			} else {
+				return 0;
+			}
+		} else {
+			if (this->left != nullptr) {
+				return this->left->destroy(data);
+			} else {
+				return 0;
+			}
+		}
+	};
 };
 
 

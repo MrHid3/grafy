@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <set>
@@ -72,8 +73,11 @@ int main() {
     // //matrix z pliku
     // MatrixGraph matrix4 = ListGraph("../listgraph.txt");
     // matrix4.print();
-    vector<int> source = {6, 12, 1, 67, 134 ,45, 13};
+    vector source = {6, 12, 1, 67, 134 ,45, 13};
     BinaryTree bt = BinaryTree(source);
-    bt.print();
+    vector<int> tak = bt.inorder();
+    for_each(tak.begin(), tak.end(), [](int i) {
+        cout << i << " ";
+    });
     return 0;
 }
