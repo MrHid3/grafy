@@ -1,5 +1,7 @@
 #ifndef BINARYTREE_H
 #define BINARYTREE_H
+#include <algorithm>
+
 #include "Node.h"
 
 class BinaryTree{
@@ -70,25 +72,42 @@ public:
 	}
 	std::vector<int> inorderIterative() {
 		std::vector<int> result;
-		Node curr = this->leftmost();
-		while(true) {
-			bool isThere = false;
-			for(int i = 0; i < result.size(); i++) {
-				if(curr.left->data == result[i]) {
-					isThere = true;
-					break;
-				}
-			}
+		std::vector<Node*> stack;
+		Node *curr = &this->root;
 
-			for(int i = 0; i < result.size(); i++) {
-				if(curr.data == result[i]) {
-					isThere = true;
-					break;
+		while (curr != nullptr || stack.size() != 0) {
+			while (curr != nullptr) {
+				stack.push_back(curr);
+				curr = curr->left;
+			}
+			curr = stack[stack.size() - 1];
+			stack.pop_back();
+			result.push_back(curr->data);
+			curr = curr->right;
+		}
+
+		return result;
+	}
+
+	void print(){
+		std::vector<Node> list = {this->root};
+		bool cont = true;
+		while(cont){
+			std::vector<Node> curr = list;
+			cont = false;
+			list = {};
+			for (int i = 0; i < curr.size(); i++){
+				std::cout << curr[i].data << " ";
+				if(curr[i].left != nullptr){
+					list.push_back(*curr[i].left);
+					cont = true;
+				}
+				if(curr[i].right != nullptr){
+					list.push_back(*curr[i].right);
+					cont = true;
 				}
 			}
-			if(!isThere) {
-				result.push_back(curr.data);
-			}
+			std::cout << "\n";
 		}
 	}
 };

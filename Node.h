@@ -21,7 +21,7 @@ public:
 	bool insert(int data){
 		if (this->data == data){
 			return 0;
-		}else if (this->data > data){
+		}else if (this->data < data){
 			if (this->right == nullptr){
 				this->right = new Node(data, this);
 				return 1;
@@ -86,10 +86,12 @@ public:
 		std::vector<int> result;
 		result.push_back(this->data);
 		if(this->left != nullptr) {
-			result.insert(result.end, this->left->preorder().begin(), this->left->preorder().end());
+			std::vector<int> left = this->left->preorder();
+			result.insert(result.end(), left.begin(), left.end());
 		}
 		if(this->right != nullptr) {
-			result.insert(result.end, this->right->preorder().begin(), this->right->preorder().end());
+			std::vector<int> right = this->right->preorder();
+			result.insert(result.end(), right.begin(), right.end());
 		}
 		return result;
 	}
@@ -97,11 +99,13 @@ public:
 	std::vector<int> inorder() {
 		std::vector<int> result;
 		if(this->left != nullptr) {
-			result.insert(result.end, this->left->preorder().begin(), this->left->preorder().end());
+			std::vector<int> left = this->left->inorder();
+			result.insert(result.end(), left.begin(), left.end());
 		}
 		result.push_back(this->data);
 		if(this->right != nullptr) {
-			result.insert(result.end, this->right->preorder().begin(), this->right->preorder().end());
+			std::vector<int> right = this->right->inorder();
+			result.insert(result.end(), right.begin(), right.end());
 		}
 		return result;
 	}
@@ -109,10 +113,12 @@ public:
 	std::vector<int> postorder() {
 		std::vector<int> result;
 		if(this->left != nullptr) {
-			result.insert(result.end, this->left->preorder().begin(), this->left->preorder().end());
+			std::vector<int> left = this->left->postorder();
+			result.insert(result.end(), left.begin(), left.end());
 		}
 		if(this->right != nullptr) {
-			result.insert(result.end, this->right->preorder().begin(), this->right->preorder().end());
+			std::vector<int> right = this->right->postorder();
+			result.insert(result.end(), right.begin(), right.end());
 		}
 		result.push_back(this->data);
 		return result;
