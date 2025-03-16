@@ -6,7 +6,6 @@
 #include "ListGraph.h"
 #include "MatrixGraph.h"
 #include "BinaryTree.h"
-#pragma once
 using namespace std;
 
 MatrixGraph::MatrixGraph(ListGraph list){
@@ -72,9 +71,11 @@ int main() {
     // //matrix z pliku
     // MatrixGraph matrix4 = ListGraph("../listgraph.txt");
     // matrix4.print();
-    vector<int> source = {6, 5, 3, 8, 4, 7, 13, 4};
+    vector<int> source = {6, 4, 5};
     BinaryTree bt = BinaryTree(source);
-    bt.root.left->left->right->leftRotate();
+    bt.root.left->right->leftRotate();
+    bt.root.left->rightRotate();
+    // bt.root.right->leftRotate();
     bt.print();
     // source = bt.inorder();
     // for (int i = 0; i < source.size(); i++){

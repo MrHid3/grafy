@@ -8,6 +8,7 @@ public:
 	Node* right;
 	Node* left;
 	Node* root;
+	bool isRight;
 
 	Node(){
 		this->right = nullptr;
@@ -15,36 +16,37 @@ public:
 		this->data = 0;
 		this->ancestor = nullptr;
 		this->root = nullptr;
+		isRight = false;
 	}
 
-	Node(int data, Node* ancestor = nullptr, Node* root = nullptr){
+	Node(int data, Node* root, Node* ancestor = nullptr, bool isRight = false){
 		this->data = data;
 		this->right = nullptr;
 		this->left = nullptr;
 		this->ancestor = ancestor;
-		this->root = nullptr;
+		this->root = root;
+		this->isRight = isRight;
 	}
 
 	void rightRotate(){
-		// Node* temp = this->right;
-		// this->right = this->ancestor;
-		// this->ancestor = this->right->ancestor;
-		// this->right->ancestor = this;
-		// temp->ancestor = this->right;
-		// this->right->left = temp;
 		Node* temp = nullptr;
 		if (this->right)
 			temp = this->right;
 		this->right = this->ancestor;
-		if (this->right->ancestor != nullptr){
-			this->ancestor = this->right->ancestor;
-			this->ancestor->left = this;
-		}
-		if (temp){
+		this->ancestor = this->right->ancestor;
+		if (this->right != this->root)
+			if (this->right->isRight)
+				this->ancestor->right = this;
+			else
+				this->ancestor->left = this;
+
+		this->right->isRight = true;
+		if (temp)
 			temp->ancestor = this->right;
-			this->right->left = temp;
-		}
+		this->right->left = temp;
 		this->right->ancestor = this;
+		if (this->right == this->root)
+			this->setRoot(this);
 	}
 
 	void leftRotate(){
@@ -52,15 +54,19 @@ public:
 		if (this->left)
 			temp = this->left;
 		this->left = this->ancestor;
-		if (this->left->ancestor != nullptr){
-			this->ancestor = this->left->ancestor;
-			this->ancestor->right = this;
-		}
-		if (temp){
+		this->ancestor = this->left->ancestor;
+		if (this->left != this->root)
+			if (this->left->isRight)
+				this->ancestor->right = this;
+			else
+				this->ancestor->left = this;
+		this->left->isRight = false;
+		if (temp)
 			temp->ancestor = this->left;
-			this->left->right = temp;
-		}
+		this->left->right = temp;
 		this->left->ancestor = this;
+		if (this->left == this->root)
+			this->setRoot(this);
 	}
 
 	bool insert(int data){
@@ -68,16 +74,27 @@ public:
 			return 0;
 		if (this->data < data){
 			if (this->right == nullptr){
-				this->right = new Node(data, this);
+				this->right = new Node(data, (this->root == nullptr? this: this->root), this, true);
 				return 1;
 			}
 			return this->right->insert(data);
 		}
 		if (this->left == nullptr){
-			this->left = new Node(data, this);
+			this->left = new Node(data, (this->root == nullptr? this: this->root), this, false);
 			return 1;
 		}
 		return this->left->insert(data);
+	};
+
+	void setRoot(Node* root){
+		if (this == root)
+			this->root = nullptr;
+		else
+			this->root = root;
+		if (this->right != nullptr)
+			this->right->setRoot(root);
+		if (this->left != nullptr)
+			this->left->setRoot(root);
 	};
 
 	bool destroy(int data){

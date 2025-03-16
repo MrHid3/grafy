@@ -1,25 +1,31 @@
 #ifndef BINARYTREE_H
 #define BINARYTREE_H
 #include <algorithm>
-
 #include "Node.h"
 
 class BinaryTree{
 public:
 	Node root;
-	int balance;
+
 	BinaryTree(){
-		root = Node();
+		resetRoot();
+		this->root = Node();
 	}
+
 	BinaryTree(int data){
-		root = Node(data);
+		resetRoot();
+		this->root = Node(data, nullptr);
 	}
+
 	BinaryTree(Node node){
-		root = node;
+		resetRoot();
+		this->root = node;
 	}
+
 	BinaryTree(std::vector<int> data) {
+		resetRoot();
 		if (data.size() > 0) {
-			this->root = Node(data[0]);
+			this->root = Node(data[0], nullptr);
 			for (int i = 1; i < data.size(); i++) {
 				this->insert(data[i]);
 			}
@@ -28,9 +34,11 @@ public:
 		}
 	}
 	bool insert(int data){
+		resetRoot();
 		return this->root.insert(data);
 	}
 	int leftmost() {
+		resetRoot();
 		Node curr = root;
 		while(curr.left != nullptr) {
 			curr = *curr.left;
@@ -38,6 +46,7 @@ public:
 		return curr.data;
 	}
 	int rightmost() {
+		resetRoot();
 		Node curr = root;
 		while(curr.right != nullptr) {
 			curr = *curr.right;
@@ -45,6 +54,7 @@ public:
 		return curr.data;
 	}
 	bool find(int data) {
+		resetRoot();
 		Node curr = root;
 		while(true) {
 			if(curr.data == data) {
@@ -63,15 +73,19 @@ public:
 		};
 	}
 	std::vector<int> inorder() {
+		resetRoot();
 		return root.inorder();
 	}
 	std::vector<int> preorder() {
+		resetRoot();
 		return root.preorder();
 	}
 	std::vector<int> postorder() {
+		resetRoot();
 		return root.postorder();
 	}
 	std::vector<int> inorderIterative() {
+		resetRoot();
 		std::vector<int> result;
 		std::vector<Node*> stack;
 		Node *curr = &this->root;
@@ -91,6 +105,7 @@ public:
 	}
 
 	void print(){
+		resetRoot();
 		std::vector<Node> list = {this->root};
 		bool cont = true;
 		while(cont){
@@ -110,6 +125,11 @@ public:
 			}
 			std::cout << "\n";
 		}
+	}
+
+	void resetRoot(){
+		if (this->root.root != nullptr)
+			this->root = *this->root.root;
 	}
 };
 
