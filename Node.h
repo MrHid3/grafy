@@ -4,38 +4,80 @@
 class Node{
 public:
 	Node* ancestor;
+	int data;
 	Node* right;
 	Node* left;
-	int data;
+	Node* root;
+
 	Node(){
-		right = nullptr;
-		left = nullptr;
-		data = 0;
+		this->right = nullptr;
+		this->left = nullptr;
+		this->data = 0;
+		this->ancestor = nullptr;
+		this->root = nullptr;
 	}
-	Node(int data, Node* ancestor = nullptr){
+
+	Node(int data, Node* ancestor = nullptr, Node* root = nullptr){
 		this->data = data;
-		right = nullptr;
-		left = nullptr;
+		this->right = nullptr;
+		this->left = nullptr;
+		this->ancestor = ancestor;
+		this->root = nullptr;
+	}
+
+	void rightRotate(){
+		// Node* temp = this->right;
+		// this->right = this->ancestor;
+		// this->ancestor = this->right->ancestor;
+		// this->right->ancestor = this;
+		// temp->ancestor = this->right;
+		// this->right->left = temp;
+		Node* temp = nullptr;
+		if (this->right)
+			temp = this->right;
+		this->right = this->ancestor;
+		if (this->right->ancestor != nullptr){
+			this->ancestor = this->right->ancestor;
+			this->ancestor->left = this;
+		}
+		if (temp){
+			temp->ancestor = this->right;
+			this->right->left = temp;
+		}
+		this->right->ancestor = this;
+	}
+
+	void leftRotate(){
+		Node* temp = nullptr;
+		if (this->left)
+			temp = this->left;
+		this->left = this->ancestor;
+		if (this->left->ancestor != nullptr){
+			this->ancestor = this->left->ancestor;
+			this->ancestor->right = this;
+		}
+		if (temp){
+			temp->ancestor = this->left;
+			this->left->right = temp;
+		}
+		this->left->ancestor = this;
 	}
 
 	bool insert(int data){
-		if (this->data == data){
+		if (this->data == data)
 			return 0;
-		}else if (this->data < data){
+		if (this->data < data){
 			if (this->right == nullptr){
 				this->right = new Node(data, this);
 				return 1;
-			}else{
-				return this->right->insert(data);
 			}
-		}else{
-			if (this->left == nullptr){
-				this->left = new Node(data, this);
-				return 1;
-			}else{
-				return this->left->insert(data);
-			}
+			return this->right->insert(data);
 		}
+		if (this->left == nullptr){
+			this->left = new Node(data, this);
+			return 1;
+		}
+		return this->left->insert(data);
 	};
 
 	bool destroy(int data){

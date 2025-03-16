@@ -7,6 +7,7 @@
 class BinaryTree{
 public:
 	Node root;
+	int balance;
 	BinaryTree(){
 		root = Node();
 	}
