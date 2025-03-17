@@ -8,22 +8,18 @@ public:
 	Node root;
 
 	BinaryTree(){
-		resetRoot();
 		this->root = Node();
 	}
 
 	BinaryTree(int data){
-		resetRoot();
 		this->root = Node(data, nullptr);
 	}
 
 	BinaryTree(Node node){
-		resetRoot();
 		this->root = node;
 	}
 
 	BinaryTree(std::vector<int> data) {
-		resetRoot();
 		if (data.size() > 0) {
 			this->root = Node(data[0], nullptr);
 			for (int i = 1; i < data.size(); i++) {

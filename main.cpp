@@ -76,10 +76,10 @@ int main() {
     bt.root.left->right->leftRotate();
     bt.root.left->rightRotate();
     // bt.root.right->leftRotate();
-    bt.print();
-    // source = bt.inorder();
-    // for (int i = 0; i < source.size(); i++){
-        // cout << source[i] << endl;
-    // }
+    // bt.print();
+    source = bt.inorder();
+    for (int i = 0; i < source.size(); i++){
+        cout << source[i] << endl;
+    }
     return 0;
 }

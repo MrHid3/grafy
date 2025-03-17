@@ -33,18 +33,23 @@ public:
 		if (this->right)
 			temp = this->right;
 		this->right = this->ancestor;
-		this->ancestor = this->right->ancestor;
+		this->right->isRight = true;
+		if (temp)
+			temp->ancestor = this->right;
+		this->ancestor->left = temp;
+		this->ancestor = this->ancestor->ancestor;
+		this->ancestor->ancestor = this;
 		if (this->right != this->root)
 			if (this->right->isRight)
 				this->ancestor->right = this;
 			else
 				this->ancestor->left = this;
+		else{
+			this->right->root = this;
+			this->root = nullptr;
+			this->ancestor = nullptr;
+		}
 
-		this->right->isRight = true;
-		if (temp)
-			temp->ancestor = this->right;
-		this->right->left = temp;
-		this->right->ancestor = this;
 		if (this->right == this->root)
 			this->setRoot(this);
 	}
@@ -54,17 +59,23 @@ public:
 		if (this->left)
 			temp = this->left;
 		this->left = this->ancestor;
-		this->ancestor = this->left->ancestor;
+		this->left->isRight = false;
+		if (temp)
+			temp->ancestor = this->left;
+		this->ancestor->right = temp;
+		this->ancestor = this->ancestor->ancestor;
+		this->ancestor->ancestor = this;
 		if (this->left != this->root)
 			if (this->left->isRight)
 				this->ancestor->right = this;
 			else
 				this->ancestor->left = this;
-		this->left->isRight = false;
-		if (temp)
-			temp->ancestor = this->left;
-		this->left->right = temp;
-		this->left->ancestor = this;
+		else{
+			this->right->root = this;
+			this->root = nullptr;
+			this->ancestor->root = this;
+			this->ancestor = nullptr;
+		}
 		if (this->left == this->root)
 			this->setRoot(this);
 	}
@@ -87,7 +98,7 @@ public:
 	};
 
 	void setRoot(Node* root){
-		if (this == root)
+		if (this->ancestor == nullptr)
 			this->root = nullptr;
 		else
 			this->root = root;
