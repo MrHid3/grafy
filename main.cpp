@@ -73,10 +73,11 @@ int main() {
     // matrix4.print();
     vector<int> source = {6, 4, 5};
     BinaryTree bt = BinaryTree(source);
-    bt.root.left->right->leftRotate();
-    bt.root.left->rightRotate();
+    bt.root->left->right->leftRotate();
+    bt.root->left->rightRotate();
     // bt.root.right->leftRotate();
     // bt.print();
+    bt.resetRoot();
     source = bt.inorder();
     for (int i = 0; i < source.size(); i++){
         cout << source[i] << endl;

@@ -5,86 +5,86 @@
 
 class BinaryTree{
 public:
-	Node root;
+	Node* root;
 
 	BinaryTree(){
-		this->root = Node();
+		this->root = new Node();
 	}
 
 	BinaryTree(int data){
-		this->root = Node(data, nullptr);
+		this->root = new Node(data, nullptr);
 	}
 
-	BinaryTree(Node node){
+	BinaryTree(Node* node){
 		this->root = node;
 	}
 
 	BinaryTree(std::vector<int> data) {
 		if (data.size() > 0) {
-			this->root = Node(data[0], nullptr);
+			this->root = new Node(data[0], nullptr);
 			for (int i = 1; i < data.size(); i++) {
 				this->insert(data[i]);
 			}
 		} else {
-			this->root = Node();
+			this->root = new Node();
 		}
 	}
 	bool insert(int data){
 		resetRoot();
-		return this->root.insert(data);
+		return this->root->insert(data);
 	}
 	int leftmost() {
 		resetRoot();
-		Node curr = root;
-		while(curr.left != nullptr) {
-			curr = *curr.left;
+		Node* curr = root;
+		while(curr->left != nullptr) {
+			curr = curr->left;
 		}
-		return curr.data;
+		return curr->data;
 	}
 	int rightmost() {
 		resetRoot();
-		Node curr = root;
-		while(curr.right != nullptr) {
-			curr = *curr.right;
+		Node* curr = root;
+		while(curr->right != nullptr) {
+			curr = curr->right;
 		}
-		return curr.data;
+		return curr->data;
 	}
 	bool find(int data) {
 		resetRoot();
-		Node curr = root;
+		Node* curr = root;
 		while(true) {
-			if(curr.data == data) {
+			if(curr->data == data) {
 				return 1;
 			}
-			if(curr.data < data) {
-				if(curr.right != nullptr) {
-					curr = *curr.right;
+			if(curr->data < data) {
+				if(curr->right != nullptr) {
+					curr = curr->right;
 				}else return 0;
 			}
-			if (curr.data > data) {
-				if(curr.left != nullptr) {
-					curr = *curr.left;
+			if (curr->data > data) {
+				if(curr->left != nullptr) {
+					curr = curr->left;
 				}else return 0;
 			}
 		};
 	}
 	std::vector<int> inorder() {
 		resetRoot();
-		return root.inorder();
+		return root->inorder();
 	}
 	std::vector<int> preorder() {
 		resetRoot();
-		return root.preorder();
+		return root->preorder();
 	}
 	std::vector<int> postorder() {
 		resetRoot();
-		return root.postorder();
+		return root->postorder();
 	}
 	std::vector<int> inorderIterative() {
 		resetRoot();
 		std::vector<int> result;
 		std::vector<Node*> stack;
-		Node *curr = &this->root;
+		Node *curr = this->root;
 
 		while (curr != nullptr || stack.size() != 0) {
 			while (curr != nullptr) {
@@ -102,7 +102,7 @@ public:
 
 	void print(){
 		resetRoot();
-		std::vector<Node> list = {this->root};
+		std::vector<Node> list = {*this->root};
 		bool cont = true;
 		while(cont){
 			std::vector<Node> curr = list;
@@ -124,8 +124,8 @@ public:
 	}
 
 	void resetRoot(){
-		if (this->root.root != nullptr)
-			this->root = *this->root.root;
+		while (this->root->ancestor != nullptr)
+			this->root = this->root->ancestor;
 	}
 };
 

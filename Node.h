@@ -33,13 +33,12 @@ public:
 		if (this->right)
 			temp = this->right;
 		this->right = this->ancestor;
-		this->right->isRight = true;
 		if (temp)
 			temp->ancestor = this->right;
-		this->ancestor->left = temp;
-		this->ancestor = this->ancestor->ancestor;
-		this->ancestor->ancestor = this;
-		if (this->right != this->root)
+		this->right->left = temp;
+		this->ancestor = this->right->ancestor;
+		this->right->ancestor = this;
+		if (this->ancestor != nullptr)
 			if (this->right->isRight)
 				this->ancestor->right = this;
 			else
@@ -49,8 +48,8 @@ public:
 			this->root = nullptr;
 			this->ancestor = nullptr;
 		}
-
-		if (this->right == this->root)
+		this->right->isRight = true;
+		if (this->root == nullptr)
 			this->setRoot(this);
 	}
 
@@ -59,12 +58,11 @@ public:
 		if (this->left)
 			temp = this->left;
 		this->left = this->ancestor;
-		this->left->isRight = false;
 		if (temp)
 			temp->ancestor = this->left;
-		this->ancestor->right = temp;
-		this->ancestor = this->ancestor->ancestor;
-		this->ancestor->ancestor = this;
+		this->left->right = temp;
+		this->ancestor = this->left->ancestor;
+		this->left->ancestor = this;
 		if (this->left != this->root)
 			if (this->left->isRight)
 				this->ancestor->right = this;
@@ -76,7 +74,8 @@ public:
 			this->ancestor->root = this;
 			this->ancestor = nullptr;
 		}
-		if (this->left == this->root)
+		this->left->isRight = false;
+		if (this->root == nullptr)
 			this->setRoot(this);
 	}
 
@@ -111,14 +110,24 @@ public:
 	bool destroy(int data){
 		if (this->data == data) {
 			if (this->right == nullptr && this->left == nullptr) {
-				delete this;
-				return 1;
+				if (this->isRight)
+					this->ancestor->right = nullptr;
+				else
+					this->ancestor->left = nullptr;
 			} else if (this->right == nullptr){
-				this->data = this->left->data;
+				this->left->ancestor = this->ancestor;
+				if (this->isRight)
+					this->ancestor->right = this->left;
+				else
+					this->ancestor->left = this->left;
 				this->left = nullptr;
 				return 1;
 			} else if (this->left == nullptr) {
-				this->data = this->right->data;
+				this->right->ancestor = this->ancestor;
+				if (this->isRight)
+					this->ancestor->right = this->right;
+				else
+					this->ancestor->left = this->right;
 				this->right = nullptr;
 				return 1;
 			} else {
@@ -127,17 +136,13 @@ public:
 				return 1;
 			}
 		} else if (this->data < data) {
-			if (this->right != nullptr) {
+			if (this->right != nullptr)
 				return this->right->destroy(data);
-			} else {
-				return 0;
-			}
+			return 0;
 		} else {
-			if (this->left != nullptr) {
+			if (this->left != nullptr)
 				return this->left->destroy(data);
-			} else {
-				return 0;
-			}
+			return 0;
 		}
 	};
 
