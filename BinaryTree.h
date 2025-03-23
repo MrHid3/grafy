@@ -29,9 +29,9 @@ public:
 			this->root = new Node();
 		}
 	}
-	bool insert(int data){
+	void insert(int data){
 		resetRoot();
-		return this->root->insert(data);
+		this->root->insert(data);
 	}
 	int leftmost() {
 		resetRoot();

@@ -71,7 +71,7 @@ public:
 		else{
 			this->right->root = this;
 			this->root = nullptr;
-			this->ancestor->root = this;
+			this->left->root = this;
 			this->ancestor = nullptr;
 		}
 		this->left->isRight = false;
@@ -79,21 +79,67 @@ public:
 			this->setRoot(this);
 	}
 
-	bool insert(int data){
-		if (this->data == data)
-			return 0;
-		if (this->data < data){
-			if (this->right == nullptr){
-				this->right = new Node(data, (this->root == nullptr? this: this->root), this, true);
-				return 1;
+	void autobalance(){
+		if (this->balance() >= -1 && this->balance() <= 1)
+			return;
+		if (this->balance() == -2){
+			if (this->right->balance() < 0){
+				this->right->leftRotate();
+				return;
 			}
-			return this->right->insert(data);
+			if (this->right->balance() > 0){
+				this->right->left->rightRotate();
+				this->right->leftRotate();
+				return;
+			}
 		}
-		if (this->left == nullptr){
+		if (this->balance() == 2){
+			if (this->left->balance() > 0){
+				this->left->rightRotate();
+				return;
+			}
+			if (this->left->balance() < 0){
+				this->left->right->leftRotate();
+				this->left->rightRotate();
+				return;
+			}
+		}
+	}
+
+	int height(){
+		if (this->left != nullptr && this->right != nullptr)
+			return std::max(this->left->height(), this->right->height()) + 1;
+		if (this->left != nullptr)
+			return this->left->height() + 1;
+		if (this->right != nullptr)
+			return this->right->height() + 1;
+		return 1;
+	}
+
+	int balance(){
+		int leftHeight = 0;
+		int rightHeight = 0;
+		if (this->left != nullptr)
+			leftHeight = this->left->height();
+		if (this->right != nullptr)
+			rightHeight = this->right->height();
+		return leftHeight - rightHeight;
+	}
+
+	void insert(int data){
+		if (this->data == data)
+			return;
+		if (this->data < data){
+			if (this->right == nullptr)
+				this->right = new Node(data, (this->root == nullptr? this: this->root), this, true);
+			else
+				this->right->insert(data);
+		}
+		else if (this->left == nullptr)
 			this->left = new Node(data, (this->root == nullptr? this: this->root), this, false);
-			return 1;
-		}
-		return this->left->insert(data);
+		else
+			this->left->insert(data);
+		this->autobalance();
 	};
 
 	void setRoot(Node* root){

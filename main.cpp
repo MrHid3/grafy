@@ -71,16 +71,15 @@ int main() {
     // //matrix z pliku
     // MatrixGraph matrix4 = ListGraph("../listgraph.txt");
     // matrix4.print();
-    vector<int> source = {6, 4, 5};
+    vector<int> source = {1,2 ,3 ,4, 5, 6};
     BinaryTree bt = BinaryTree(source);
-    bt.root->left->right->leftRotate();
-    bt.root->left->rightRotate();
     // bt.root.right->leftRotate();
-    // bt.print();
-    bt.resetRoot();
-    source = bt.inorder();
-    for (int i = 0; i < source.size(); i++){
-        cout << source[i] << endl;
-    }
+    // bt.root->autobalance();
+    bt.print();
+    // bt.resetRoot();
+    // source = bt.inorder();
+    // for (int i = 0; i < source.size(); i++){
+        // cout << source[i] << endl;
+    // }
     return 0;
 }
